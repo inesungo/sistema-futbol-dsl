@@ -338,6 +338,14 @@ class ParserFutbol:
         if len(numeros) != 11:
             raise ValueError("Debe haber exactamente 11 titulares")
         
+        # Validar que los jugadores existan en el equipo
+        if 'equipo_local' in self.partido_actual:
+            equipo = self.sistema.obtener_equipo(self.partido_actual['equipo_local'])
+            if equipo:
+                for num in numeros:
+                    if not equipo.obtener_jugador(num):
+                        raise ValueError(f"El jugador #{num} no existe en el equipo {equipo.codigo}")
+        
         if self.partido_actual is None:
             self.partido_actual = {}
         self.partido_actual['titulares_local'] = numeros
@@ -348,6 +356,14 @@ class ParserFutbol:
         if len(numeros) != 11:
             raise ValueError("Debe haber exactamente 11 titulares")
         
+        # Validar que los jugadores existan en el equipo
+        if 'equipo_visitante' in self.partido_actual:
+            equipo = self.sistema.obtener_equipo(self.partido_actual['equipo_visitante'])
+            if equipo:
+                for num in numeros:
+                    if not equipo.obtener_jugador(num):
+                        raise ValueError(f"El jugador #{num} no existe en el equipo {equipo.codigo}")
+        
         if self.partido_actual is None:
             self.partido_actual = {}
         self.partido_actual['titulares_visitante'] = numeros
@@ -355,6 +371,15 @@ class ParserFutbol:
     def _procesar_banco_local(self, datos: str):
         """Procesa el banco local"""
         numeros = [int(x.strip()) for x in datos.split(',')]
+        
+        # Validar que los jugadores existan en el equipo
+        if 'equipo_local' in self.partido_actual:
+            equipo = self.sistema.obtener_equipo(self.partido_actual['equipo_local'])
+            if equipo:
+                for num in numeros:
+                    if not equipo.obtener_jugador(num):
+                        raise ValueError(f"El jugador #{num} no existe en el equipo {equipo.codigo}")
+        
         if self.partido_actual is None:
             self.partido_actual = {}
         self.partido_actual['banco_local'] = numeros
@@ -362,6 +387,15 @@ class ParserFutbol:
     def _procesar_banco_visitante(self, datos: str):
         """Procesa el banco visitante"""
         numeros = [int(x.strip()) for x in datos.split(',')]
+        
+        # Validar que los jugadores existan en el equipo
+        if 'equipo_visitante' in self.partido_actual:
+            equipo = self.sistema.obtener_equipo(self.partido_actual['equipo_visitante'])
+            if equipo:
+                for num in numeros:
+                    if not equipo.obtener_jugador(num):
+                        raise ValueError(f"El jugador #{num} no existe en el equipo {equipo.codigo}")
+        
         if self.partido_actual is None:
             self.partido_actual = {}
         self.partido_actual['banco_visitante'] = numeros
@@ -507,7 +541,7 @@ class ParserFutbol:
 
 
 def procesar_archivo_partidos(archivo_path: str, sistema: SistemaFutbol) -> bool:
-    """Procesa un archivo de partidos"""
+    """Procesa un archivo de partidos - PUEDE CONTENER MÚLTIPLES PARTIDOS"""
     try:
         parser = ParserFutbol(sistema)
         
@@ -517,20 +551,32 @@ def procesar_archivo_partidos(archivo_path: str, sistema: SistemaFutbol) -> bool
                 if not linea or linea.startswith('#'):
                     continue
                 
+                # Detectar inicio de nuevo partido
+                if linea.upper().startswith('FECHA:'):
+                    # Finalizar partido anterior si existe
+                    if parser.partido_actual is not None and 'fecha' in parser.partido_actual:
+                        try:
+                            parser.finalizar_partido()
+                            print(f"✅ Partido finalizado correctamente")
+                        except Exception as e:
+                            print(f"❌ Error finalizando partido anterior: {e}")
+                            return False
+                
                 if not parser.procesar_comando(linea):
-                    print(f"Error en línea {num_linea}: {linea}")
+                    print(f"❌ Error en línea {num_linea}: {linea}")
                     return False
         
         # Finalizar el último partido si existe
         if parser.partido_actual is not None:
             parser.finalizar_partido()
+            print(f"✅ Último partido finalizado correctamente")
         
         return True
     except FileNotFoundError:
-        print(f"Archivo no encontrado: {archivo_path}")
+        print(f"❌ Archivo no encontrado: {archivo_path}")
         return False
     except Exception as e:
-        print(f"Error procesando archivo: {e}")
+        print(f"❌ Error procesando archivo: {e}")
         return False
 
 

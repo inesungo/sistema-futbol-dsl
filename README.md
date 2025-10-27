@@ -18,13 +18,14 @@ Sistema completo implementado en Python que permite gestionar información de pa
 
 ### DSL Externo (PLY)
 - Comandos específicos de fútbol
-- Procesamiento desde archivos de texto
+- Procesamiento desde archivos de texto (soporta múltiples partidos)
 - Comandos interactivos por consola
 - Validación de sintaxis y datos
+- Validación de jugadores en equipos
 
 ### Funcionalidades del Sistema
 - Carga de partidos (archivos y comandos)
-- Tabla de posiciones por puntos
+- Tabla de posiciones por puntos (3-1-0)
 - Tabla de goleadores
 - Listado de resultados de partidos
 - Gestión completa de equipos
@@ -32,8 +33,9 @@ Sistema completo implementado en Python que permite gestionar información de pa
 ## Estructura del Proyecto
 
 ```
-entregable 3/
+sistema-futbol-dsl/
 ├── main.py                 # Punto de entrada principal
+├── demo.py                # Script de demostración completa
 ├── models.py              # Modelos de datos (Equipo, Jugador, Partido, etc.)
 ├── requirements.txt       # Dependencias
 ├── README.md             # Documentación completa
@@ -48,14 +50,14 @@ entregable 3/
 │       ├── __init__.py
 │       └── dsl_externo.py  # DSL externo con PLY
 └── ejemplos/
-    └── partidos_ejemplo.txt  # Archivo de ejemplo de partidos
+    └── partidos_ejemplo.txt  # Archivo de ejemplo con 2 partidos
 ```
 
 ## Instalación y Uso
 
 ### Requisitos
 - Python 3.7+
-- pip (gestor de paquetes de Python)
+- pip (gestor de paquetas de Python)
 
 ### Instalación
 1. Clonar o descargar el repositorio
@@ -64,17 +66,30 @@ entregable 3/
    pip install -r requirements.txt
    ```
 
-### Uso Básico
+### Ejecución Rápida (Demo)
+
+Para ver el sistema completo en acción:
+```bash
+python demo.py
+```
+
+Este script:
+1. Crea dos equipos (Barcelona y Real Madrid) con DSL Interno
+2. Carga partidos desde el archivo de ejemplo con DSL Externo
+3. Muestra tablas de posiciones y goleadores
+4. Demuestra todas las funcionalidades del sistema
+
+### Uso Interactivo
 
 #### 1. Ejecutar el sistema
 ```bash
 python main.py
 ```
 
-#### 2. Crear equipos (obligatorio)
+#### 2. Crear equipos (obligatorio antes de cargar partidos)
 - Seleccionar opción 5: "Gestión de equipos"
-- Crear al menos 2 equipos con códigos de 3 letras
-- Agregar mínimo 11 jugadores por equipo
+- Crear al menos 2 equipos con códigos de 3 letras (ej: BAR, RMA)
+- Agregar mínimo 17 jugadores por equipo (11 titulares + 6 suplentes)
 
 #### 3. Cargar partidos
 - Seleccionar opción 1: "Carga de partidos"
@@ -90,25 +105,20 @@ python main.py
 
 ### Crear Equipos
 ```python
-from src.dsl_interno import nuevo_equipo
+from src.dsl_interno import SistemaFutbol
+
+# Inicializar sistema
+sistema = SistemaFutbol()
 
 # Crear equipo usando fluent interface
-barcelona = (nuevo_equipo()
-            .con_nombre("Barcelona")
-            .con_codigo("BAR")
-            .agregar_jugador(1, "Ter Stegen")
-            .agregar_jugador(2, "Sergi Roberto")
-            .agregar_jugador(9, "Lewandowski"))
-```
+barcelona = sistema.crear_equipo()
+barcelona.con_nombre("Barcelona").con_codigo("BAR")
+barcelona.agregar_jugador(1, "Ter Stegen")
+barcelona.agregar_jugador(2, "Sergi Roberto")
+barcelona.agregar_jugador(9, "Lewandowski")
 
-### Crear Jugadores
-```python
-from src.dsl_interno import nuevo_jugador
-
-# Crear jugador usando fluent interface
-jugador = (nuevo_jugador()
-          .con_numero(10)
-          .con_nombre("Messi"))
+# Registrar en el sistema
+sistema.registrar_equipo(barcelona)
 ```
 
 ## Uso del DSL Externo
@@ -135,9 +145,14 @@ TARJETA: EQUIPO, TIEMPO, JUGADOR, COLOR
 CAMBIO: EQUIPO, TIEMPO, SALE, ENTRA
 ```
 
-### Ejemplo de Archivo de Partidos
+### Ejemplo de Archivo de Partidos (Múltiples Partidos)
+
+**IMPORTANTE**: El sistema ahora soporta múltiples partidos en un mismo archivo. Cada partido comienza con el comando `FECHA:`.
+
 ```
-# Partido Barcelona vs Real Madrid
+# ========================================
+# PARTIDO 1: Barcelona vs Real Madrid
+# ========================================
 FECHA: 15/10/2023
 EQUIPO LOCAL: BAR
 EQUIPO VISITANTE: RMA
@@ -147,22 +162,40 @@ TITULARES LOCAL: 1,2,3,4,5,6,7,8,9,10,11
 TITULARES VISITANTE: 1,2,3,4,5,6,7,8,9,10,11
 BANCO LOCAL: 12,13,14,15,16,17
 BANCO VISITANTE: 12,13,14,15,16,17
-
 GOL: BAR, 25, 9, 10
 GOL: RMA, 45, 7
 TARJETA: RMA, 30, 4, AMARILLA
 CAMBIO: BAR, 70, 11, 12
+
+# ========================================
+# PARTIDO 2: Real Madrid vs Barcelona (Revancha)
+# ========================================
+FECHA: 20/10/2023
+EQUIPO LOCAL: RMA
+EQUIPO VISITANTE: BAR
+FORMACION LOCAL: 4-4-2
+FORMACION VISITANTE: 4-3-3
+TITULARES LOCAL: 1,2,3,4,5,6,7,8,9,10,11
+TITULARES VISITANTE: 1,2,3,4,5,6,7,8,9,10,11
+BANCO LOCAL: 12,13,14,15,16,17
+BANCO VISITANTE: 12,13,14,15,16,17
+GOL: RMA, 15, 9
+GOL: BAR, 35, 11
+CAMBIO: RMA, 65, 8, 12
 ```
 
 ## Características Técnicas
 
 ### Validaciones Implementadas
-- Números de camiseta únicos por equipo
-- Códigos de equipo de 3 letras
-- Formaciones válidas
-- 11 titulares por equipo
-- Tiempos de eventos válidos
-- Colores de tarjetas válidos
+- ✅ Números de camiseta únicos por equipo
+- ✅ Códigos de equipo de 3 letras
+- ✅ Equipos deben existir antes de crear partidos
+- ✅ Jugadores en titulares/banco deben existir en el equipo
+- ✅ Formaciones válidas
+- ✅ 11 titulares por equipo exactamente
+- ✅ Tiempos de eventos válidos
+- ✅ Colores de tarjetas válidos (AMARILLA o ROJA)
+- ✅ Procesamiento de múltiples partidos en un archivo
 
 ### Sistema de Puntos
 - Ganador: 3 puntos

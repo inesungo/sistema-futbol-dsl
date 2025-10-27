@@ -1,0 +1,40 @@
+# ========================================
+# Partidos para los equipos ABC y DEF
+# ========================================
+# NOTA: Como solo hay 11 jugadores por equipo,
+# usamos algunos del banco como si fueran suplentes
+
+# ========================================
+# PARTIDO 1: Barca vs Real
+# ========================================
+FECHA: 27/10/2025
+EQUIPO LOCAL: ABC
+EQUIPO VISITANTE: DEF
+FORMACION LOCAL: 4-3-3
+FORMACION VISITANTE: 4-4-2
+TITULARES LOCAL: 1,2,3,4,5,6,7,8,9,10,11
+TITULARES VISITANTE: 1,2,3,4,5,6,7,8,9,10,11
+BANCO LOCAL: 1,2,3,4,5,6
+BANCO VISITANTE: 1,2,3,4,5,6
+GOL: ABC, 25, 9, 10
+GOL: DEF, 45, 7
+GOL: ABC, 67, 9
+TARJETA: DEF, 30, 4, AMARILLA
+TARJETA: ABC, 55, 6, AMARILLA
+
+# ========================================
+# PARTIDO 2: Real vs Barca (Revancha)
+# ========================================
+FECHA: 28/10/2025
+EQUIPO LOCAL: DEF
+EQUIPO VISITANTE: ABC
+FORMACION LOCAL: 4-4-2
+FORMACION VISITANTE: 4-3-3
+TITULARES LOCAL: 1,2,3,4,5,6,7,8,9,10,11
+TITULARES VISITANTE: 1,2,3,4,5,6,7,8,9,10,11
+BANCO LOCAL: 1,2,3,4,5,6
+BANCO VISITANTE: 1,2,3,4,5,6
+GOL: DEF, 15, 9
+GOL: ABC, 35, 11
+GOL: DEF, 60, 7, 10
+TARJETA: ABC, 20, 6, AMARILLA

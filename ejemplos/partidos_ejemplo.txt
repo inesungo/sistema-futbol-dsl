@@ -1,7 +1,12 @@
+# ========================================
 # Archivo de ejemplo para carga de partidos
-# Formato de comandos para el DSL externo
+# ========================================
+# NOTA: Los equipos BAR y RMA deben estar creados antes de cargar este archivo
+# Puede crear los equipos con el menú opción 5 (Crear equipo de prueba)
 
-# Partido 1: Barcelona vs Real Madrid
+# ========================================
+# PARTIDO 1: Barcelona vs Real Madrid
+# ========================================
 FECHA: 15/10/2023
 EQUIPO LOCAL: BAR
 EQUIPO VISITANTE: RMA
@@ -11,8 +16,6 @@ TITULARES LOCAL: 1,2,3,4,5,6,7,8,9,10,11
 TITULARES VISITANTE: 1,2,3,4,5,6,7,8,9,10,11
 BANCO LOCAL: 12,13,14,15,16,17
 BANCO VISITANTE: 12,13,14,15,16,17
-
-# Eventos del partido
 GOL: BAR, 25, 9, 10
 GOL: RMA, 45, 7
 GOL: BAR, 67, 9
@@ -21,23 +24,21 @@ TARJETA: BAR, 55, 6, AMARILLA
 CAMBIO: BAR, 70, 11, 12
 CAMBIO: RMA, 75, 8, 13
 
-# Partido 2: Manchester City vs Liverpool
+# ========================================
+# PARTIDO 2: Real Madrid vs Barcelona (Revancha)
+# ========================================
 FECHA: 20/10/2023
-EQUIPO LOCAL: MCI
-EQUIPO VISITANTE: LIV
-FORMACION LOCAL: 4-3-3
+EQUIPO LOCAL: RMA
+EQUIPO VISITANTE: BAR
+FORMACION LOCAL: 4-4-2
 FORMACION VISITANTE: 4-3-3
 TITULARES LOCAL: 1,2,3,4,5,6,7,8,9,10,11
 TITULARES VISITANTE: 1,2,3,4,5,6,7,8,9,10,11
 BANCO LOCAL: 12,13,14,15,16,17
 BANCO VISITANTE: 12,13,14,15,16,17
-
-# Eventos del partido
-GOL: MCI, 15, 9
-GOL: LIV, 35, 11
-GOL: MCI, 60, 7, 10
-TARJETA: LIV, 20, 6, AMARILLA
-TARJETA: MCI, 45, 4, AMARILLA
-TARJETA: LIV, 80, 6, ROJA
-CAMBIO: MCI, 65, 8, 12
-CAMBIO: LIV, 85, 9, 13
+GOL: RMA, 15, 9
+GOL: BAR, 35, 11
+GOL: RMA, 60, 7, 10
+TARJETA: BAR, 20, 6, AMARILLA
+CAMBIO: RMA, 65, 8, 12
+CAMBIO: BAR, 80, 10, 13
