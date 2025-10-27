@@ -239,17 +239,4 @@ goleadores = sistema.obtener_tabla_goleadores()
 - **Type Hints**: Tipado estático
 - **Fluent Interface**: Patrón de diseño para DSL interno
 
-## Requisitos Cumplidos
 
-✅ DSL interno con patrón fluent interface  
-✅ DSL externo con PLY  
-✅ Comandos específicos de fútbol  
-✅ Carga desde archivos y consola  
-✅ Validaciones y controles de errores  
-✅ Sistema de puntos (3-1-0)  
-✅ Tabla de posiciones  
-✅ Tabla de goleadores  
-✅ Menú interactivo completo  
-✅ Documentación y ejemplos  
-
-El sistema está completamente funcional y cumple con todos los requerimientos especificados.
